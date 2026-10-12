@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: worker
+spec:
+  containers:
+  - name: worker
+    # TODO verify if this is a secret or not
+    image: ffbernstein-dwffekbygbane5d9.azurecr.io/bernstein-worker
+    # env:
+    ports:
+    - containerPort: 80

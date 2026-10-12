@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: result
+spec:
+  containers:
+  - name: result
+    # TODO verify if this is a secret or not
+    image: ffbernstein-dwffekbygbane5d9.azurecr.io/bernstein-result
+    # env:
+    ports:
+    - containerPort: 80
