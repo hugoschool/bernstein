@@ -4,7 +4,7 @@ metadata:
   name: redis-service
 spec:
   selector:
-    app: redis
+    database: redis
   ports:
     - protocol: TCP
       port: 6379
