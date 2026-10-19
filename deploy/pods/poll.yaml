@@ -8,7 +8,6 @@ spec:
   containers:
   - name: poll
     image: ffbernstein-dwffekbygbane5d9.azurecr.io/bernstein-poll:latest
-    # env:
     ports:
     - containerPort: 80
   imagePullSecrets:
