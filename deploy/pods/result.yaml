@@ -10,3 +10,5 @@ spec:
     # env:
     ports:
     - containerPort: 80
+  imagePullSecrets:
+  - name: registry-key
