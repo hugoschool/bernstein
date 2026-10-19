@@ -10,6 +10,29 @@ else
     source $ENV_FILE
 fi
 
+DELETE_EVERYTHING=0
+
+usage() {
+    echo "Usage: $0" 1>&2
+    echo "Options:" 1>&2
+    echo "  -y: Delete automatically everything in the cluster" 1>&2
+    exit $1
+}
+
+while getopts ":yh" opt; do
+    case "${opt}" in
+        y)
+            DELETE_EVERYTHING=1
+            ;;
+        h)
+            usage 0
+            ;;
+        *)
+            usage 1
+            ;;
+    esac
+done
+
 # TODO maybe add some error handling
 
 if ! kubectl get secret registry-key 2>&1 >/dev/null; then
@@ -22,6 +45,30 @@ if ! kubectl get secret registry-key 2>&1 >/dev/null; then
         --docker-server=$DOCKER_REGISTRY \
         --docker-username=$DOCKER_USERNAME \
         --docker-password=$DOCKER_PASSWORD
+fi
+
+delete_everything_in_cluster() {
+    kubectl delete pod poll
+    kubectl delete pod result
+    kubectl delete pod worker
+}
+
+if [ $DELETE_EVERYTHING -eq 0 ]; then
+    read -p "Delete everything in cluster? (y/n) " yn
+    case $yn in
+        [Yy]* )
+            delete_everything_in_cluster
+            ;;
+        [Nn]* )
+            :
+            ;;
+        * )
+            :
+            ;;
+    esac
+else
+    echo "Deleting everything from cluster"
+    delete_everything_in_cluster
 fi
 
 echo "Applying all pods"
