@@ -10,6 +10,11 @@ else
     source $ENV_FILE
 fi
 
+if [ -z "$POSTGRES_PASSWORD" ]; then
+    echo "POSTGRES_PASSWORD not set"
+    exit 1
+fi
+
 DELETE_EVERYTHING=0
 
 usage() {
@@ -47,10 +52,18 @@ if ! kubectl get secret registry-key 2>&1 >/dev/null; then
         --docker-password=$DOCKER_PASSWORD
 fi
 
+if ! kubectl get secret db-password 2>&1 >/dev/null; then
+    echo "Creating secret db-password"
+
+    kubectl create secret generic db-password --from-literal=db-password=$POSTGRES_PASSWORD
+fi
+
 delete_everything_in_cluster() {
     kubectl delete pod poll
     kubectl delete pod result
     kubectl delete pod worker
+    kubectl delete pod redis
+    kubectl delete pod postgresql
 }
 
 if [ $DELETE_EVERYTHING -eq 0 ]; then
@@ -75,6 +88,8 @@ echo "Applying all pods"
 kubectl apply -f $DEPLOY_FOLDER/pods/poll.yaml
 kubectl apply -f $DEPLOY_FOLDER/pods/result.yaml
 kubectl apply -f $DEPLOY_FOLDER/pods/worker.yaml
+kubectl apply -f $DEPLOY_FOLDER/pods/redis.yaml
+kubectl apply -f $DEPLOY_FOLDER/pods/postgresql.yaml
 
 # kubectl apply -f deploy/services/poll.yaml
 
