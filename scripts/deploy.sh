@@ -16,18 +16,23 @@ if [ -z "$POSTGRES_PASSWORD" ]; then
 fi
 
 DELETE_EVERYTHING=0
+ONLY_DELETE=0
 
 usage() {
     echo "Usage: $0" 1>&2
     echo "Options:" 1>&2
     echo "  -y: Delete automatically everything in the cluster" 1>&2
+    echo "  -d: Only delete everything in the cluster, do not deploy" 1>&2
     exit $1
 }
 
-while getopts ":yh" opt; do
+while getopts ":yhd" opt; do
     case "${opt}" in
         y)
             DELETE_EVERYTHING=1
+            ;;
+        d)
+            ONLY_DELETE=1
             ;;
         h)
             usage 0
@@ -59,11 +64,14 @@ if ! kubectl get secret db-password 2>&1 >/dev/null; then
 fi
 
 delete_everything_in_cluster() {
-    kubectl delete pod poll
-    kubectl delete pod result
-    kubectl delete pod worker
-    kubectl delete pod redis
-    kubectl delete pod postgresql
+    kubectl delete pod poll \
+        result \
+        worker \
+        redis \
+        postgresql
+
+    kubectl delete pvc postgresql-pvc
+    kubectl delete pv postgresql-pv
 }
 
 if [ $DELETE_EVERYTHING -eq 0 ]; then
@@ -83,6 +91,12 @@ else
     echo "Deleting everything from cluster"
     delete_everything_in_cluster
 fi
+
+if [ $ONLY_DELETE -eq 1 ]; then
+    exit 0
+fi
+
+kubectl apply -f $DEPLOY_FOLDER/volumes/postgresql.yaml
 
 echo "Applying all pods"
 kubectl apply -f $DEPLOY_FOLDER/pods/poll.yaml
