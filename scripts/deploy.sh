@@ -64,6 +64,12 @@ if ! kubectl get secret db-password 2>&1 >/dev/null; then
 fi
 
 delete_everything_in_cluster() {
+    kubectl delete service poll \
+        result \
+        worker \
+        redis \
+        postgresql
+
     kubectl delete pod poll \
         result \
         worker \
@@ -96,7 +102,15 @@ if [ $ONLY_DELETE -eq 1 ]; then
     exit 0
 fi
 
+echo "Applying volumes"
 kubectl apply -f $DEPLOY_FOLDER/volumes/postgresql.yaml
+
+echo "Applying services"
+kubectl apply -f $DEPLOY_FOLDER/services/postgresql.yaml
+kubectl apply -f $DEPLOY_FOLDER/services/redis.yaml
+kubectl apply -f $DEPLOY_FOLDER/services/poll.yaml
+kubectl apply -f $DEPLOY_FOLDER/services/result.yaml
+kubectl apply -f $DEPLOY_FOLDER/services/worker.yaml
 
 echo "Applying all pods"
 kubectl apply -f $DEPLOY_FOLDER/pods/poll.yaml
@@ -104,7 +118,5 @@ kubectl apply -f $DEPLOY_FOLDER/pods/result.yaml
 kubectl apply -f $DEPLOY_FOLDER/pods/worker.yaml
 kubectl apply -f $DEPLOY_FOLDER/pods/redis.yaml
 kubectl apply -f $DEPLOY_FOLDER/pods/postgresql.yaml
-
-# kubectl apply -f deploy/services/poll.yaml
 
 # kubectl create deployment poll-deployment --image=deploy/pods/poll.yaml
