@@ -64,11 +64,11 @@ if ! kubectl get secret db-password 2>&1 >/dev/null; then
 fi
 
 delete_everything_in_cluster() {
-    kubectl delete service poll \
-        result \
-        worker \
-        redis \
-        postgresql
+    kubectl delete service poll-service \
+        result-service \
+        worker-service \
+        redis-service \
+        postgresql-service
 
     kubectl delete pod poll \
         result \
