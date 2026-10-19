@@ -10,5 +10,19 @@ spec:
     image: ffbernstein-dwffekbygbane5d9.azurecr.io/bernstein-result
     ports:
     - containerPort: 80
+    env:
+    - name: POSTGRES_HOST
+      value: postgresql-service.default.svc.cluster.local
+    - name: POSTGRES_PORT
+      value: "5432"
+    - name: POSTGRES_DB
+      value: postgres
+    - name: POSTGRES_USER
+      value: postgres
+    - name: POSTGRES_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: db-password
+          key: db-password
   imagePullSecrets:
   - name: registry-key

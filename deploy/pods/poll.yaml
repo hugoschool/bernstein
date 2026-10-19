@@ -10,5 +10,8 @@ spec:
     image: ffbernstein-dwffekbygbane5d9.azurecr.io/bernstein-poll:latest
     ports:
     - containerPort: 80
+    env:
+    - name: REDIS_HOST
+      value: redis-service.default.svc.cluster.local
   imagePullSecrets:
   - name: registry-key
