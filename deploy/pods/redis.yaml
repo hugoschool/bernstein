@@ -8,5 +8,11 @@ spec:
     image: redis:8.10.2
     ports:
     - containerPort: 6379
-    # TODO: add volume
     # TODO: maybe add config map
+    # TODO: verify if redis volumes need to use PV / PVC
+    volumeMounts:
+    - name: redis-storage
+      mountPath: /data/redis
+  volumes:
+  - name: redis-storage
+    emptyDir: {}
