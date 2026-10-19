@@ -1,0 +1,15 @@
+apiVersion: v1
+data:
+  schema.sql: |
+    CREATE TABLE IF NOT EXISTS votes
+    (
+      id text PRIMARY KEY,
+      vote text NOT NULL
+    );
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2026-10-19T17:10:48Z"
+  name: db-schema
+  namespace: default
+  resourceVersion: "68991"
+  uid: 82c86a88-97a1-428d-b932-1f584e440fbb

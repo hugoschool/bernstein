@@ -64,6 +64,8 @@ if ! kubectl get secret db-password 2>&1 >/dev/null; then
 fi
 
 delete_everything_in_cluster() {
+    kubectl delete configmap db-schema
+
     kubectl delete service poll-service \
         result-service \
         worker-service \
@@ -101,6 +103,9 @@ fi
 if [ $ONLY_DELETE -eq 1 ]; then
     exit 0
 fi
+
+echo "Applying configmaps"
+kubectl apply -f $DEPLOY_FOLDER/configmaps/db-schema.yaml
 
 echo "Applying volumes"
 kubectl apply -f $DEPLOY_FOLDER/volumes/postgresql.yaml

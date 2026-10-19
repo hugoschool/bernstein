@@ -20,7 +20,15 @@ spec:
     volumeMounts:
       - name: postgresql-volume
         mountPath: /var/lib/postgresql
+      - name: schema-volume
+        # Specifying the filename here isn't needed, see example below:
+        # https://kubernetes.io/docs/concepts/configuration/configmap/#configmaps-and-pods
+        mountPath: /docker-entrypoint-initdb.d
+        readOnly: true
   volumes:
   - name: postgresql-volume
     persistentVolumeClaim:
       claimName: postgresql-pvc
+  - name: schema-volume
+    configMap:
+      name: db-schema
