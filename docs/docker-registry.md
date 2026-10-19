@@ -21,3 +21,14 @@ Make sure to note the registry domain name.
 Once created, go to the repository permissions, then token.
 
 Create a token for your account. Once created, use the password to log into docker on your local machine. If the command isn't given, here's an example: `docker login -u <TOKEN_NAME> -p <TOKEN_PASSWORD> <REGISTRY_DOMAIN_NAME>`
+
+## Create the Kubernetes secret
+
+You can create the Kubernetes secret yourself if needed (it will automatically be created by the deploy.sh script):
+
+```sh
+kubectl create secret docker-registry registry-key \
+    --docker-server=$DOCKER_REGISTRY \
+    --docker-username=$DOCKER_USERNAME \
+    --docker-password=$DOCKER_PASSWORD
+```
