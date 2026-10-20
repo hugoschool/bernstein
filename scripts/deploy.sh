@@ -80,6 +80,12 @@ delete_everything_in_cluster() {
 
     kubectl delete pvc postgresql-pvc
     kubectl delete pv postgresql-pv
+
+    kubectl delete deployment poll-deployment \
+        result-deployment \
+        worker-deployment \
+        redis-deployment \
+        postgresql-deployment
 }
 
 if [ $DELETE_EVERYTHING -eq 0 ]; then
@@ -104,24 +110,29 @@ if [ $ONLY_DELETE -eq 1 ]; then
     exit 0
 fi
 
-echo "Applying configmaps"
+echo "🗾 Applying configmaps"
 kubectl apply -f $DEPLOY_FOLDER/configmaps/db-schema.yaml
 
-echo "Applying volumes"
+echo "🔊 Applying volumes"
 kubectl apply -f $DEPLOY_FOLDER/volumes/postgresql.yaml
 
-echo "Applying services"
+echo "🐕‍🦺 Applying services"
 kubectl apply -f $DEPLOY_FOLDER/services/postgresql.yaml
 kubectl apply -f $DEPLOY_FOLDER/services/redis.yaml
 kubectl apply -f $DEPLOY_FOLDER/services/poll.yaml
 kubectl apply -f $DEPLOY_FOLDER/services/result.yaml
 kubectl apply -f $DEPLOY_FOLDER/services/worker.yaml
 
-echo "Applying all pods"
+echo "🫛 Applying all pods"
 kubectl apply -f $DEPLOY_FOLDER/pods/poll.yaml
 kubectl apply -f $DEPLOY_FOLDER/pods/result.yaml
 kubectl apply -f $DEPLOY_FOLDER/pods/worker.yaml
 kubectl apply -f $DEPLOY_FOLDER/pods/redis.yaml
 kubectl apply -f $DEPLOY_FOLDER/pods/postgresql.yaml
 
-# kubectl create deployment poll-deployment --image=deploy/pods/poll.yaml
+echo "🛫 Creating deployements"
+kubectl create deployment poll-deployment --image=deploy/pods/poll.yaml
+kubectl create deployment result-deployment --image=deploy/pods/result.yaml
+kubectl create deployment worker-deployment --image=deploy/pods/worker.yaml
+kubectl create deployment redis-deployment --image=deploy/pods/redis.yaml
+kubectl create deployment postgresql-deployment --image=deploy/pods/postgresql.yaml
