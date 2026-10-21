@@ -6,11 +6,11 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: redis
+      database: redis
   template:
     metadata:
       labels:
-        app: redis
+        database: redis
     spec:
       containers:
       - name: redis
