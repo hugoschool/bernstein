@@ -17,12 +17,14 @@ fi
 
 DELETE_EVERYTHING=0
 ONLY_DELETE=0
+APPLY_PODS=0
 
 usage() {
     echo "Usage: $0" 1>&2
     echo "Options:" 1>&2
     echo "  -y: Delete automatically everything in the cluster" 1>&2
     echo "  -d: Only delete everything in the cluster, do not deploy" 1>&2
+    echo "  -p: Apply pods, don't use deployments" 1>&2
     exit $1
 }
 
@@ -33,6 +35,9 @@ while getopts ":yhd" opt; do
             ;;
         d)
             ONLY_DELETE=1
+            ;;
+        p)
+            APPLY_PODS=1
             ;;
         h)
             usage 0
@@ -78,14 +83,14 @@ delete_everything_in_cluster() {
         redis \
         postgresql
 
-    kubectl delete pvc postgresql-pvc
-    kubectl delete pv postgresql-pv
-
     kubectl delete deployment poll-deployment \
         result-deployment \
         worker-deployment \
         redis-deployment \
         postgresql-deployment
+
+    kubectl delete pvc postgresql-pvc
+    kubectl delete pv postgresql-pv
 }
 
 if [ $DELETE_EVERYTHING -eq 0 ]; then
@@ -123,16 +128,18 @@ kubectl apply -f $DEPLOY_FOLDER/services/poll.yaml
 kubectl apply -f $DEPLOY_FOLDER/services/result.yaml
 kubectl apply -f $DEPLOY_FOLDER/services/worker.yaml
 
-echo "🫛 Applying all pods"
-kubectl apply -f $DEPLOY_FOLDER/pods/poll.yaml
-kubectl apply -f $DEPLOY_FOLDER/pods/result.yaml
-kubectl apply -f $DEPLOY_FOLDER/pods/worker.yaml
-kubectl apply -f $DEPLOY_FOLDER/pods/redis.yaml
-kubectl apply -f $DEPLOY_FOLDER/pods/postgresql.yaml
+if [ $APPLY_PODS -eq 1 ]; then
+    echo "🫛 Applying all pods"
+    kubectl apply -f $DEPLOY_FOLDER/pods/poll.yaml
+    kubectl apply -f $DEPLOY_FOLDER/pods/result.yaml
+    kubectl apply -f $DEPLOY_FOLDER/pods/worker.yaml
+    kubectl apply -f $DEPLOY_FOLDER/pods/redis.yaml
+    kubectl apply -f $DEPLOY_FOLDER/pods/postgresql.yaml
+fi
 
 echo "🛫 Creating deployements"
-kubectl create deployment poll-deployment --image=deploy/pods/poll.yaml
-kubectl create deployment result-deployment --image=deploy/pods/result.yaml
-kubectl create deployment worker-deployment --image=deploy/pods/worker.yaml
-kubectl create deployment redis-deployment --image=deploy/pods/redis.yaml
-kubectl create deployment postgresql-deployment --image=deploy/pods/postgresql.yaml
+kubectl apply -f $DEPLOY_FOLDER/deployments/poll.yaml
+kubectl apply -f $DEPLOY_FOLDER/deployments/result.yaml
+kubectl apply -f $DEPLOY_FOLDER/deployments/worker.yaml
+kubectl apply -f $DEPLOY_FOLDER/deployments/redis.yaml
+kubectl apply -f $DEPLOY_FOLDER/deployments/postgresql.yaml

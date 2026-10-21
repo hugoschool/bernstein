@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: worker-deployment
@@ -12,7 +12,7 @@ spec:
       labels:
         app: worker
     spec:
-       containers:
+      containers:
         - name: worker
           image: ffbernstein-dwffekbygbane5d9.azurecr.io/bernstein-worker
           env:
@@ -32,5 +32,5 @@ spec:
                 secretKeyRef:
                   name: db-password
                   key: db-password
-        imagePullSecrets:
+      imagePullSecrets:
         - name: registry-key
