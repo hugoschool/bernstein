@@ -24,11 +24,11 @@ usage() {
     echo "Options:" 1>&2
     echo "  -y: Delete automatically everything in the cluster" 1>&2
     echo "  -d: Only delete everything in the cluster, do not deploy" 1>&2
-    echo "  -p: Apply pods, don't use deployments" 1>&2
+    echo "  -p: Only apply pods, don't use deployments" 1>&2
     exit $1
 }
 
-while getopts ":yhd" opt; do
+while getopts ":yhdp" opt; do
     case "${opt}" in
         y)
             DELETE_EVERYTHING=1
@@ -139,9 +139,11 @@ if [ $APPLY_PODS -eq 1 ]; then
     kubectl apply -f $DEPLOY_FOLDER/pods/postgresql.yaml
 fi
 
-echo "🛫 Creating deployements"
-kubectl apply -f $DEPLOY_FOLDER/deployments/poll.yaml
-kubectl apply -f $DEPLOY_FOLDER/deployments/result.yaml
-kubectl apply -f $DEPLOY_FOLDER/deployments/worker.yaml
-kubectl apply -f $DEPLOY_FOLDER/deployments/redis.yaml
-kubectl apply -f $DEPLOY_FOLDER/deployments/postgresql.yaml
+if [ $APPLY_PODS -eq 0 ]; then
+    echo "🛫 Creating deployements"
+    kubectl apply -f $DEPLOY_FOLDER/deployments/poll.yaml
+    kubectl apply -f $DEPLOY_FOLDER/deployments/result.yaml
+    kubectl apply -f $DEPLOY_FOLDER/deployments/worker.yaml
+    kubectl apply -f $DEPLOY_FOLDER/deployments/redis.yaml
+    kubectl apply -f $DEPLOY_FOLDER/deployments/postgresql.yaml
+fi
