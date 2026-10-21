@@ -1,5 +1,11 @@
 # Deploy
 
+## Cluster
+
+For your cluster, you need to choose:
+- whether you host it locally (minikube)
+- whether you host it on [Azure (kubernetes-cluster.md)](./kubernetes-cluster.md)
+
 ## Setup
 
 Copy and fill the `.env.example` file:
