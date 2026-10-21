@@ -8,6 +8,8 @@ spec:
   containers:
   - name: worker
     image: ffbernstein-dwffekbygbane5d9.azurecr.io/bernstein-worker
+    ports:
+    - containerPort: 80
     env:
       - name: REDIS_HOST
         value: redis-service.default.svc.cluster.local
@@ -25,5 +27,26 @@ spec:
           secretKeyRef:
             name: db-password
             key: db-password
+
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 80
+      failureThreshold: 1
+      periodSeconds: 10
+
+    readinessProbe:
+      httpGet:
+        path: /readyz
+        port: 80
+      failureThreshold: 30
+      periodSeconds: 10
+
+    startupProbe:
+      httpGet:
+        path: /healthz
+        port: 80
+      failureThreshold: 30
+      periodSeconds: 10
   imagePullSecrets:
   - name: registry-key
