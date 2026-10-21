@@ -72,7 +72,9 @@ delete_everything_in_cluster() {
     kubectl delete configmap db-schema
 
     kubectl delete service poll-service \
+        poll-load-balancer \
         result-service \
+        result-load-balancer \
         worker-service \
         redis-service \
         postgresql-service
