@@ -32,6 +32,15 @@ spec:
             # https://kubernetes.io/docs/concepts/configuration/configmap/#configmaps-and-pods
             mountPath: /docker-entrypoint-initdb.d
             readOnly: true
+
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "1024Mi"
+            cpu: "750m"
+
       volumes:
       - name: postgresql-volume
         persistentVolumeClaim:
