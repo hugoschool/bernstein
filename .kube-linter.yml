@@ -1,0 +1,12 @@
+checks:
+  exclude:
+    # Seems broken at the moment when the deployment and service aren't in the same folder
+    # https://github.com/stackrox/kube-linter/issues/1282
+    - "dangling-service"
+
+    # Our images aren't tagged in versions, only latest is tagged
+    - "latest-tag"
+
+    # Security features
+    - "no-read-only-root-fs"
+    - "run-as-non-root"
