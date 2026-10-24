@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: poll-deployment
 spec:
-  replicas: 3
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -18,6 +18,13 @@ spec:
         app: poll
     spec:
       restartPolicy: Always
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app: poll
+            topologyKey: "kubernetes.io/hostname"
       containers:
       - name: poll
         image: ffbernstein-dwffekbygbane5d9.azurecr.io/bernstein-poll:latest
