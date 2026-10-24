@@ -5,6 +5,7 @@ metadata:
   labels:
     database: postgresql
 spec:
+  restartPolicy: Always
   containers:
   - name: postgresql
     image: postgres:18.6

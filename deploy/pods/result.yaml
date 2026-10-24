@@ -5,6 +5,7 @@ metadata:
   labels:
     app: result
 spec:
+  restartPolicy: Always
   containers:
   - name: result
     image: ffbernstein-dwffekbygbane5d9.azurecr.io/bernstein-result

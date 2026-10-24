@@ -5,6 +5,7 @@ metadata:
   labels:
     app: worker
 spec:
+  restartPolicy: Always
   containers:
   - name: worker
     image: ffbernstein-dwffekbygbane5d9.azurecr.io/bernstein-worker

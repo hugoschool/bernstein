@@ -5,6 +5,7 @@ metadata:
   labels:
     database: redis
 spec:
+  restartPolicy: Always
   containers:
   - name: redis
     image: redis:8.10.2

@@ -5,6 +5,7 @@ metadata:
   labels:
     app: poll
 spec:
+  restartPolicy: Always
   containers:
   - name: poll
     image: ffbernstein-dwffekbygbane5d9.azurecr.io/bernstein-poll:latest
