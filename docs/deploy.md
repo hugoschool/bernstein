@@ -8,13 +8,15 @@ For your cluster, you need to choose:
 
 ## Setup
 
+Firstly, setup a [private Docker registry](./docker-registry.md).
+
 Copy and fill the `.env.example` file:
 ```sh
 cp .env.example .env
 ```
 
 Replace the placeholder values with:
-- the values the ones you obtained when [setting up the Docker Registry](./docker-registry.md)
+- the values the ones you obtained when setting up the Docker Registry
 - a secure password for the database (`POSTGRES_PASSWORD`)
 
 ## Running the script
