@@ -20,7 +20,7 @@ spec:
       restartPolicy: Always
       containers:
       - name: result
-        image: ffbernstein-dwffekbygbane5d9.azurecr.io/bernstein-result
+        image: ffbernstein-dwffekbygbane5d9.azurecr.io/bernstein-result:latest
         ports:
         - containerPort: 80
         env:
