@@ -34,3 +34,7 @@ A couple of options are available in the script (list all of them `./scripts/dep
 ```sh
 ./scripts/deploy.sh -d
 ```
+- Only apply pods, don't use deployments
+```sh
+./scripts/deploy.sh -p
+```
