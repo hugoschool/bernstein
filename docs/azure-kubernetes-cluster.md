@@ -1,4 +1,4 @@
-# Kubernetes Cluster
+# Azure Kubernetes Cluster
 
 This guide is going to use the Azure Kubernetes Cluster as an example.
 

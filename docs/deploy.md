@@ -3,8 +3,8 @@
 ## Cluster
 
 For your cluster, you need to choose:
-- whether you host it locally (minikube)
-- whether you host it on [Azure (kubernetes-cluster.md)](./kubernetes-cluster.md)
+- whether you host it locally ([minikube, example in minikube.md](./minikube.md))
+- or whether you host it on [Azure (azure-kubernetes-cluster.md)](./azure-kubernetes-cluster.md)
 
 ## Setup
 
