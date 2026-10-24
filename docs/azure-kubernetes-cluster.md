@@ -18,6 +18,8 @@ Node pools page:
 
 > This is simply the cheapest node pool on Azure
 
+You can also add more nodes if needed.
+
 Integrations page:
 
 Select the container registry you created earlier.
