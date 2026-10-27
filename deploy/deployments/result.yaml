@@ -20,11 +20,13 @@ spec:
       restartPolicy: Always
       affinity:
         podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchLabels:
-                app: result
-            topologyKey: "kubernetes.io/hostname"
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: result
+              topologyKey: "kubernetes.io/hostname"
       containers:
       - name: result
         image: ffbernstein-dwffekbygbane5d9.azurecr.io/bernstein-result:latest
