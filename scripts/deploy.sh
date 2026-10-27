@@ -96,6 +96,9 @@ delete_everything_in_cluster() {
         redis-deployment \
         postgresql-deployment
 
+    kubectl delete hpa poll-deployment \
+        result-deployment
+
     kubectl delete pvc postgresql-pvc
     kubectl delete pv postgresql-pv
 }
@@ -152,3 +155,7 @@ if [ $APPLY_PODS -eq 0 ]; then
     kubectl apply -f $DEPLOY_FOLDER/deployments/redis.yaml
     kubectl apply -f $DEPLOY_FOLDER/deployments/postgresql.yaml
 fi
+
+echo "➡️ Creating HPAs"
+kubectl apply -f $DEPLOY_FOLDER/deployments/hpa/poll.yaml
+kubectl apply -f $DEPLOY_FOLDER/deployments/hpa/result.yaml
