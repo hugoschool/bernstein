@@ -48,7 +48,12 @@ while getopts ":yhdp" opt; do
     esac
 done
 
-# TODO maybe add some error handling
+if command -v minikube >/dev/null; then
+    echo "Minikube detected"
+    if minikube status 2>&1 >/dev/null; then
+        minikube addons enable metrics-server 2>&1 >/dev/null
+    fi
+fi
 
 if ! kubectl get secret registry-key 2>&1 >/dev/null; then
     echo "Creating the registry-key secret"
