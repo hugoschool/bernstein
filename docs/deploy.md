@@ -8,15 +8,27 @@ For your cluster, you need to choose:
 
 ## Setup
 
-Firstly, setup a [private Docker registry](./docker-registry.md).
-
-Copy and fill the `.env.example` file:
+Firstly, copy the `.env.example` file:
 ```sh
 cp .env.example .env
 ```
 
+> You will need to fill the values once the docker registry is up and working.
+
+Then setup a [private Docker registry](./docker-registry.md) and push the images there.
+
+You will then need to replace the current docker registry with yours.
+
+The current docker registry in use is `ffbernstein-dwffekbygbane5d9.azurecr.io`, so you will need to replace it with yours in all files that contain it:
+- `deploy/deployments/poll.yaml`
+- `deploy/deployments/result.yaml`
+- `deploy/deployments/worker.yaml`
+- `deploy/pods/poll.yaml`
+- `deploy/pods/result.yaml`
+- `deploy/pods/worker.yaml`
+
 Replace the placeholder values with:
-- the values the ones you obtained when setting up the Docker Registry
+- the values you obtained when setting up the Docker Registry
 - a secure password for the database (`POSTGRES_PASSWORD`)
 
 ## Running the script

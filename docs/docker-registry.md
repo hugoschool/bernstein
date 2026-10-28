@@ -2,7 +2,7 @@
 
 This guide is going to use the Azure Container Registry as an example.
 
-## Creation of the registry
+## Azure Docker Registry Creation
 
 On the container registry creation page on Azure, here's what to fill.
 
@@ -22,6 +22,8 @@ Once created, go to the repository permissions, then token.
 
 Create a token for your account. Once created, use the password to log into docker on your local machine. If the command isn't given, here's an example: `docker login -u <TOKEN_NAME> -p <TOKEN_PASSWORD> <REGISTRY_DOMAIN_NAME>`
 
+**Make sure to put these values in the .env file you've created before.**
+
 ## Create the Kubernetes secret
 
 You can create the Kubernetes secret yourself if needed (it will automatically be created by the deploy.sh script):
@@ -32,3 +34,9 @@ kubectl create secret docker-registry registry-key \
     --docker-username=$DOCKER_USERNAME \
     --docker-password=$DOCKER_PASSWORD
 ```
+
+## Build and push the images
+
+> You must be [logged in](#logging-in) to push the images.
+>
+To build and push the images to the docker registry, you can use the `docker-build-push-images.sh` script at the root of the repository.
