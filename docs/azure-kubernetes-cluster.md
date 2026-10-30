@@ -14,6 +14,8 @@ On the overview page, select "Belgium Central" as the regions.
 
 Node pools page:
 
+Delete the given (should be named `agentpool`) node pool and create a new one with these settings:
+
 ![Kubernetes Cluster Node Pool Creation](./images/kubernetes-cluster-node-pool-creation.png)
 
 > This is simply the cheapest node pool on Azure
