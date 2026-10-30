@@ -38,3 +38,15 @@ az aks get-credentials --name "cluster-name" --resource-group "resource-group"
 ```
 
 > You can also probably use the Azure Cloud Shell
+
+## Adding VPA (Vertical Pod Autoscaling)
+
+The `deploy.sh` script should automatically add the Vertical Pod Autoscaling.
+
+If it doesn't, or you don't use the `deploy.sh` script, run the following commands:
+```sh
+git clone --branch vertical-pod-autoscaler-1.8.0 --depth 1 https://github.com/kubernetes/autoscaler.git
+
+cd autoscaler/vertical-pod-autoscaler
+./hack/vpa-up.sh
+```

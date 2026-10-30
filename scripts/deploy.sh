@@ -55,6 +55,16 @@ if command -v minikube >/dev/null; then
     fi
 fi
 
+if ! [ -d "$BASE_DIR/autoscaler" ]; then
+    echo "Cloning and adding VPA"
+
+    git clone --branch vertical-pod-autoscaler-1.8.0 --depth 1 https://github.com/kubernetes/autoscaler.git $BASE_DIR/autoscaler
+
+    pushd $BASE_DIR/autoscaler/vertical-pod-autoscaler
+    ./hack/vpa-up.sh
+    popd
+fi
+
 if ! kubectl get secret registry-key 2>&1 >/dev/null; then
     echo "Creating the registry-key secret"
     echo "Docker registry: $DOCKER_REGISTRY"
@@ -98,6 +108,8 @@ delete_everything_in_cluster() {
 
     kubectl delete hpa poll-deployment \
         result-deployment
+
+    kubectl delete vpa worker-deployment
 
     kubectl delete pvc postgresql-pvc
     kubectl delete pv postgresql-pv
@@ -159,3 +171,6 @@ fi
 echo "➡️ Creating HPAs"
 kubectl apply -f $DEPLOY_FOLDER/deployments/hpa/poll.yaml
 kubectl apply -f $DEPLOY_FOLDER/deployments/hpa/result.yaml
+
+echo "⬆️ Creating VPAs"
+kubectl apply -f $DEPLOY_FOLDER/deployments/vpa/worker.yaml
