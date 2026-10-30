@@ -59,11 +59,11 @@ if ! [ -d "$BASE_DIR/autoscaler" ]; then
     echo "Cloning and adding VPA"
 
     git clone --branch vertical-pod-autoscaler-1.8.0 --depth 1 https://github.com/kubernetes/autoscaler.git $BASE_DIR/autoscaler
-
-    pushd $BASE_DIR/autoscaler/vertical-pod-autoscaler
-    ./hack/vpa-up.sh
-    popd
 fi
+
+pushd $BASE_DIR/autoscaler/vertical-pod-autoscaler >/dev/null
+./hack/vpa-up.sh >/dev/null 2>&1 || echo "VPA configuration failed"
+popd > /dev/null
 
 if ! kubectl get secret registry-key 2>&1 >/dev/null; then
     echo "Creating the registry-key secret"
