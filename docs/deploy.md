@@ -1,21 +1,35 @@
 # Deploy
 
+## Docker registry
+
+To get your cluster up and going, you first need to push the images to a docker registry.
+
+[Here is a document on how to set it up for Azure Container Registry](./docker-registry.md#azure-docker-registry-creation)
+
 ## Cluster
 
 For your cluster, you need to choose:
 - whether you host it locally ([minikube, example in minikube.md](./minikube.md))
 - or whether you host it on [Azure (azure-kubernetes-cluster.md)](./azure-kubernetes-cluster.md)
 
+Read the documents linked above for guidance on how to set it up in the context of this project.
+
 ## Setup
 
-Firstly, copy the `.env.example` file:
+### Env file
+
+Copy the `.env.example` file:
 ```sh
 cp .env.example .env
 ```
 
-> You will need to fill the values once the docker registry is up and working.
+Replace the placeholder values with:
+- [the values you obtained when setting up the Docker Registry](./docker-registry.md#logging-in)
+- a secure password for the database (`POSTGRES_PASSWORD`)
 
-Then setup a [private Docker registry](./docker-registry.md) and push the images there.
+### Docker registry URL
+
+You should [push the images from your docker registry if not already done earlier.](./docker-registry.md#build-and-push-the-images)
 
 You will then need to replace the current docker registry with yours.
 
@@ -26,10 +40,6 @@ The current docker registry in use is `ffbernstein-dwffekbygbane5d9.azurecr.io`,
 - `deploy/pods/poll.yaml`
 - `deploy/pods/result.yaml`
 - `deploy/pods/worker.yaml`
-
-Replace the placeholder values with:
-- the values you obtained when setting up the Docker Registry
-- a secure password for the database (`POSTGRES_PASSWORD`)
 
 ## Running the script
 

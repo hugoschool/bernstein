@@ -12,7 +12,7 @@ Create a resource group
 
 Set the Registry name to whatever you want
 
-Recommended: Set the Domain name label scope to No scope
+Recommended: Set the Domain name label scope to No reuse
 
 Make sure to note the registry domain name.
 
@@ -22,7 +22,7 @@ Once created, go to the repository permissions, then token.
 
 Create a token for your account. Once created, use the password to log into docker on your local machine. If the command isn't given, here's an example: `docker login -u <TOKEN_NAME> -p <TOKEN_PASSWORD> <REGISTRY_DOMAIN_NAME>`
 
-**Make sure to put these values in the .env file you've created before.**
+**[Make sure to put these values in the .env file.](./deploy.md#env-file)**
 
 ## Create the Kubernetes secret
 
@@ -38,5 +38,7 @@ kubectl create secret docker-registry registry-key \
 ## Build and push the images
 
 > You must be [logged in](#logging-in) to push the images.
->
+
 To build and push the images to the docker registry, you can use the `docker-build-push-images.sh` script at the root of the repository.
+
+> Make sure you've also filled the .env file before running the script
