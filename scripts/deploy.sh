@@ -56,13 +56,14 @@ if command -v minikube >/dev/null; then
 fi
 
 if ! [ -d "$BASE_DIR/autoscaler" ]; then
-    echo "Cloning and adding VPA"
+    echo "Cloning VPA repository"
 
     git clone --branch vertical-pod-autoscaler-1.8.0 --depth 1 https://github.com/kubernetes/autoscaler.git $BASE_DIR/autoscaler
 fi
 
+echo "Setting up VPA"
 pushd $BASE_DIR/autoscaler/vertical-pod-autoscaler >/dev/null
-./hack/vpa-up.sh >/dev/null 2>&1 || echo "VPA configuration failed"
+./hack/vpa-up.sh >/dev/null 2>&1 && echo "VPA configured correctly" || echo "VPA configuration failed"
 popd > /dev/null
 
 if ! kubectl get secret registry-key 2>&1 >/dev/null; then
